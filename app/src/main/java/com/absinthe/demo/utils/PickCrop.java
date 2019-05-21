@@ -101,11 +101,11 @@ public class PickCrop {
             // crop为true是设置在开启的intent中设置显示的view可以剪裁
             intent.putExtra("crop",true);
             // aspectX,aspectY 是宽高的比例，这里设置正方形
-            intent.putExtra("aspectX",337);
-            intent.putExtra("aspectY",212);
+            intent.putExtra("aspectX",0);
+            intent.putExtra("aspectY",0);
             //设置要裁剪的宽高
-            intent.putExtra("outputX", 337); //200dp
-            intent.putExtra("outputY",212);
+            //intent.putExtra("outputX", 200);
+            //intent.putExtra("outputY",200);
             intent.putExtra("scale",true);
             //如果图片过大，会导致oom，这里设置为false
             intent.putExtra("return-data",false);
@@ -152,11 +152,11 @@ public class PickCrop {
             // crop为true是设置在开启的intent中设置显示的view可以剪裁
             intent.putExtra("crop",true);
             // aspectX,aspectY 是宽高的比例，这里设置正方形
-            intent.putExtra("aspectX",337);
-            intent.putExtra("aspectY",212);
+            intent.putExtra("aspectX",0);
+            intent.putExtra("aspectY",0);
             //设置要裁剪的宽高
-            intent.putExtra("outputX", 337);
-            intent.putExtra("outputY",212);
+            //intent.putExtra("outputX", 200);
+            //intent.putExtra("outputY",200);
             intent.putExtra("scale",true);
             //如果图片过大，会导致oom，这里设置为false
             intent.putExtra("return-data",false);

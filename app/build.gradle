@@ -6,7 +6,7 @@ android {
         applicationId "com.absinthe.demo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 64
+        versionCode 72
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

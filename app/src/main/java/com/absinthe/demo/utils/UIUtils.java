@@ -1,23 +1,19 @@
 package com.absinthe.demo.utils;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 
 
 public class UIUtils {
-    private static ProgressDialog progressDialog;
-
-    public static void showProgressDialog(Activity activity, String text) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(activity);
+    public static void showProgressDialog(ProgressDialog progressDialog, String text) {
+        if (progressDialog != null) {
             progressDialog.setMessage(text);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(true);
+            progressDialog.show();
         }
-        progressDialog.show();
     }
 
-    public static void closeProgressDialog() {
+    public static void closeProgressDialog(ProgressDialog progressDialog) {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }

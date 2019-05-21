@@ -1,6 +1,7 @@
 package com.absinthe.demo;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -45,20 +46,21 @@ public class MainActivity extends AppCompatActivity {
     private Button selectImg;
     private ImageView image;
     private Button upload;
+    private ProgressDialog progressDialog;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_UPLOAD_START:
-                    UIUtils.showProgressDialog(MainActivity.this, "上传中……");
+                    UIUtils.showProgressDialog(progressDialog, "上传中……");
                     break;
                 case MSG_UPLOAD_FAIL:
-                    UIUtils.closeProgressDialog();
+                    UIUtils.closeProgressDialog(progressDialog);
                     Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_LONG).show();
                     break;
                 case MSG_UPLOAD_SUCCESS:
-                    UIUtils.closeProgressDialog();
+                    UIUtils.closeProgressDialog(progressDialog);
                     break;
             }
         }
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         selectImg = findViewById(R.id.select_img);
         image = findViewById(R.id.image_view);
         upload = findViewById(R.id.upload);
+        progressDialog = new ProgressDialog(this);
 
         selectImg.setOnClickListener(v -> showListDialog());
         upload.setOnClickListener(v -> new Thread(() -> uploadImage(server, "file.png",
