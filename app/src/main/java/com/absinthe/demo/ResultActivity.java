@@ -14,6 +14,7 @@ public class ResultActivity extends AppCompatActivity {
     private ImageView standard_image;
     private TextView tv_name;
     private String name;
+    private String chinese_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,12 @@ public class ResultActivity extends AppCompatActivity {
 
         try {
             name = MainActivity.jsonObject.getString("filePath");
-            Log.d("Result", "Name:"+name);
+            chinese_name = MainActivity.jsonObject.getString("title");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        tv_name.setText(name);
+        tv_name.setText(chinese_name);
 
         int id = Utility.getResId(name, R.drawable.class);
         standard_image.setImageResource(id);
