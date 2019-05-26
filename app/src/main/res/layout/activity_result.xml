@@ -7,13 +7,12 @@
     tools:context=".ResultActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_standard_image"
         android:layout_width="318dp"
         android:layout_height="189dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="236dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/img_260px_025pikachu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,17 +20,17 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
-        android:layout_height="21dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="检测到：皮卡丘"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/iv_standard_image"
         app:layout_constraintVertical_bias="0.36" />
 </android.support.constraint.ConstraintLayout>

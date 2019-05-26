@@ -6,7 +6,7 @@ android {
         applicationId "com.absinthe.demo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 72
+        versionCode 96 
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -31,7 +31,6 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.myhexaville:smart-image-picker:1.0.4'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.0-alpha01'
     testImplementation 'junit:junit:4.13-beta-3'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

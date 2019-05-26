@@ -23,6 +23,9 @@ import com.absinthe.demo.utils.PickCrop;
 import com.absinthe.demo.utils.UIUtils;
 import com.zhihu.matisse.Matisse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,27 +43,38 @@ import static com.absinthe.demo.utils.PickCrop.*;
 
 public class MainActivity extends AppCompatActivity {
     public static Uri imageUri;
-
-    private final String server = "http://45.32.49.235:7777/test";
+    public static JSONObject jsonObject;
 
     private Button selectImg;
     private ImageView image;
     private Button upload;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog1;
+    private ProgressDialog progressDialog2;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_UPLOAD_START:
-                    UIUtils.showProgressDialog(progressDialog, "上传中……");
+                    UIUtils.showProgressDialog(progressDialog1, "上传中……");
                     break;
                 case MSG_UPLOAD_FAIL:
-                    UIUtils.closeProgressDialog(progressDialog);
+                    UIUtils.closeProgressDialog(progressDialog1);
                     Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_LONG).show();
                     break;
                 case MSG_UPLOAD_SUCCESS:
-                    UIUtils.closeProgressDialog(progressDialog);
+                    UIUtils.closeProgressDialog(progressDialog1);
+                    break;
+                case MSG_GET_START:
+                    UIUtils.showProgressDialog(progressDialog2, "等待服务器返回数据");
+                    break;
+                case MSG_GET_FAIL:
+                    UIUtils.closeProgressDialog(progressDialog2);
+                    Toast.makeText(MainActivity.this, "返回数据错误", Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_GET_SUCCESS:
+                    UIUtils.closeProgressDialog(progressDialog2);
                     break;
             }
         }
@@ -72,13 +86,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        selectImg = findViewById(R.id.select_img);
-        image = findViewById(R.id.image_view);
-        upload = findViewById(R.id.upload);
-        progressDialog = new ProgressDialog(this);
+        selectImg = findViewById(R.id.btn_select_img);
+        image = findViewById(R.id.iv_upload_image);
+        upload = findViewById(R.id.btn_upload);
+        progressDialog1 = new ProgressDialog(this);
+        progressDialog2 = new ProgressDialog(this);
 
         selectImg.setOnClickListener(v -> showListDialog());
-        upload.setOnClickListener(v -> new Thread(() -> uploadImage(server, "file.png",
+        upload.setOnClickListener(v -> new Thread(() -> uploadImage(SERVER, "file.png",
                         new File(Environment
                         .getExternalStorageDirectory()
                         .getAbsolutePath()
@@ -107,12 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 con.setRequestProperty("Content-Type",
                         "multipart/form-data;boundary=" + boundary);
 
-                //Log.d("Server", "ResponseCode:"+con.getResponseCode());
 
                 /* 设置DataOutputStream */
                 OutputStream outputSteam = con.getOutputStream();
                 DataOutputStream ds = new DataOutputStream(outputSteam);
-                Log.d("Server", "here");
                 StringBuilder sb = new StringBuilder();
                 sb.append(twoHyphens).append(boundary)
                         .append(end);
@@ -164,9 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
                 int res = con.getResponseCode();
                 Log.d("Server", "UploadSuccess:" + res);
+                Log.d("Server", "InputStream:" + b);
 
                 if (res == 200) {
                     handler.sendEmptyMessage(MSG_UPLOAD_SUCCESS);
+                    handler.sendEmptyMessage(MSG_GET_START);
+                    getJSON(b);
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     startActivity(intent);
                 }
@@ -180,7 +196,15 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-
+    private void getJSON(StringBuilder sb) {
+        try {
+            jsonObject = new JSONObject(sb.toString());
+            handler.sendEmptyMessage(MSG_GET_SUCCESS);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            handler.sendEmptyMessage(MSG_GET_FAIL);
+        }
+    }
 
     private void showListDialog() {
         final String[] listItems = new String[]{"选择相册图片", "拍照"};
