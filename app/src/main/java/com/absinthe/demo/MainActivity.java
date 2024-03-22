@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.absinthe.demo.utils.PickCrop;
 import com.absinthe.demo.utils.UIUtils;
 import com.zhihu.matisse.Matisse;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 handler.sendEmptyMessage(MSG_UPLOAD_START);
-                URL url = new URL(actionUrl);
+                URL url = Urls.create(actionUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 /* 允许Input、Output，不使用Cache */
                 con.setDoInput(true);
